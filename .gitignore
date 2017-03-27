@@ -6,3 +6,6 @@ node/node_modules
 
 # js
 node/js
+
+# debug
+node/debug.*
