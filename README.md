@@ -11,6 +11,8 @@ npm install web-icon-node
 ```demo.coffee
 web_icon = require 'web-icon-node'
 
-web_icon.get 'https://github.com', (list) ->
+web_icon.get 'http://ngnl.jp', (list) ->
   console.log list
 ```
+
+![demo](./__sample__/demo.png)
