@@ -5,7 +5,7 @@ node_modules
 .DS_Store
 
 # js
-#*.js
+*.js
 
 # debug
 debug.*
