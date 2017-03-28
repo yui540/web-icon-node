@@ -21,5 +21,8 @@
   "homepage": "https://github.com/yuki540net/web-clip-icon#readme",
   "devDependencies": {
     "coffee-script": "^1.12.4"
+  },
+  "dependencies": {
+    "request": "^2.81.0"
   }
 }

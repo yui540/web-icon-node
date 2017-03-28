@@ -1,5 +1,6 @@
-http = require './http'
-icon = require './icon'
+request = require 'request'
+url     = require 'url'
+icon    = require './icon'
 
 module.exports =
 	##
@@ -7,23 +8,19 @@ module.exports =
 	# @param _url : URL
 	# @param fn   : callback
 	##
-	get: (_url, fn) =>
-		http.request _url, (res) ->
+	get: (_url, fn) ->
+		_url = url.parse _url
+		_url = _url.protocol + '//' + _url.host
 
-			# redirect
-			if res.status is 301
-				_url = res.header.location
-
-				http.request _url, arguments.callee
-
-			# error
-			else if res is false
+		request _url, (err, res, body) ->
+			# Error
+			if err
 				fn 
-					"apple-touch-icon" : false
-					"shortcut icon"    : false
-					"icon"             : false
+					"apple-touch-icon" : []
+					"shortcut icon"    : []
+					"icon"             : []
 
 			# OK
 			else
-				list = icon.get _url, res.body
+				list = icon.get _url, body
 				fn list

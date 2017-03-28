@@ -1,46 +1,53 @@
-url  = require 'url'
-path = require 'path'
+class Icon
+	constructor: ->
+		@url  = require 'url'
+		@path = require 'path'
+		@reg  = 
+			"apple-touch-icon" : /<link rel=\"apple-touch-icon\".*?>/g
+			"shortcut icon"    : /<link rel=\"shortcut icon\".*?>/g
+			"fluid-icon"       : /<link rel=\"fluid-icon\".*?>/g
+			"icon"             : /<link rel=\"icon\".*?>/g
 
-checkIcon = (type, _url, body) ->
-	link = null
-	_url = url.parse _url
-
-	# link tag
-	if type is 'apple-touch-icon'
-		link = body.match /<link.*?rel=\"apple-touch-icon\".*?>/
-	else if type is 'shortcut icon'
-		link = body.match /<link.*?rel=\"shortcut icon\".*?>/
-	else 
-		link = body.match /<link.*?rel=\"icon\".*?>/
-
-	if not link
-		return false
-	link = link[0]
-
-	# href
-	href = link.match /href=\".*?\"/
-	if not href
-		return false
-	href = href[0].replace /(href=|\")/g, ''
-
-	# icon
-	icon = path.join _url.host, href
-	icon = _url.protocol + '//' + icon
-	return icon
-
-module.exports =
 	##
-	# iconの取得
-	# @param _url : URL
-	# @param body : response body
+	# アイコンの取得
+	# @param url  : URL
+	# @param body : Response Body
+	## 
+	get: (url, body) ->
+		list = {}
+		for key, _reg of @reg
+			list[key] = @checkIcon _reg, url, body
+
+		return list
+
 	##
-	get: (_url, body) ->
-		icon = {}
-		rel  = ['apple-touch-icon', 'shortcut icon', 'icon']
+	# アイコンのチェック
+	# @param reg  : 正規表現
+	# @param url  : URL
+	# @param body : Response Body
+	## 
+	checkIcon: (reg, url, body) ->
+		list = []
+		link = null
+		url  = @url.parse url
 
-		for _rel in rel
-			_icon = checkIcon _rel, _url, body
-			icon[_rel] = _icon
+		# link tag
+		link = body.match reg
+		if not link
+			link = []
 
-		return icon
+		for _link in link
+			href = _link.match /href=\".*?\"/
 
+			# href attribute
+			if href
+				href = href[0].replace /(href=|\")/g, ''
+				if not href.match /(http:|https:)/
+					href = @path.join url.host, href
+					href = url.protocol + '//' + href
+
+				list.push href
+
+		return list
+
+module.exports = new Icon()
