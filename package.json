@@ -1,0 +1,29 @@
+{
+  "name": "web-icon-node",
+  "version": "0.0.1",
+  "description": "Webクリップアイコンやファビコンを取得するライブラリ for Node.js",
+  "main": "js/core.js",
+  "scripts": {
+    "build": "coffee -o js/ -c coffee/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuki540net/web-icon-node.git"
+  },
+  "keywords": [
+    "web-clip-icon",
+    "favicon"
+  ],
+  "author": "yuki540",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuki540net/web-icon-node/issues"
+  },
+  "homepage": "https://github.com/yuki540net/web-icon-node#readme",
+  "devDependencies": {
+    "coffee-script": "^1.12.4"
+  },
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}
